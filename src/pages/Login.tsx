@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../constants";
-
 interface LoginProps {
-  // setAccessToken: (token: string) => void;
+  setAccessToken: (token: string) => void;
 }
 
 const login = (email: string, password: string) =>
@@ -15,15 +15,18 @@ const login = (email: string, password: string) =>
     headers: { "Content-Type": "application/json" },
   })
     .then((response) => response.json())
-    .then((response) => console.log(response));
+    .then((response) => response["access_token"]);
 
-export const Login: React.FC<LoginProps> = ({}) => {
+export const Login: React.FC<LoginProps> = (props: LoginProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (evt: any) => {
+
+  const handleSubmit = async (evt: any) => {
     evt.preventDefault();
-    login(email, password);
+    props.setAccessToken(await login(email, password));
+    navigate(`/routines`);
   };
   return (
     <form onSubmit={handleSubmit}>
