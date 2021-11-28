@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
 import { API_URL } from "../constants";
 
 const getRoutines = (accessToken: string) =>
@@ -22,15 +23,28 @@ export const Routines: React.FC<RoutinesProps> = ({ accessToken }) => {
       console.log(routines);
     })();
   }, []);
+  if (!routines) {
+    return <div>Add a routine to continue</div>;
+  }
 
-  return (
-    <table>
-      {routines.map((routine) => (
-        <tr>
-          <td> {routine["title"]} </td>
-          <td> {routine.desc} </td>
-        </tr>
-      ))}
-    </table>
-  );
+  if (routines.length > 0)
+    return (
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th> Title </th>
+            <th> Desc </th>
+          </tr>
+        </thead>
+        <tbody>
+          {routines.map((routine) => (
+            <tr>
+              <td> {routine.title} </td>
+              <td> {routine.desc} </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  else return <div>You have not added any routines yet!</div>;
 };

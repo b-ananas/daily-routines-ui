@@ -26,7 +26,7 @@ export const Login: React.FC<LoginProps> = (props: LoginProps) => {
   const handleSubmit = async (evt: any) => {
     evt.preventDefault();
     props.setAccessToken(await login(email, password));
-    navigate(`/routines`);
+    navigate(`/`);
   };
   return (
     <form onSubmit={handleSubmit}>
